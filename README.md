@@ -3,14 +3,14 @@ It's probably important to note that this was kinda a perfect storm for me.
 2. I also love puzzles, and especially word puzzles (inveterate NYT crossword addict). This is not the first time I've scripted solutions to puzzles like this, I literally do it for fun.
 
 
-OCR Image Processing:
+# OCR Image Processing
 
 I used the open-source GOCR package (http://jocr.sourceforge.net/) to turn screenshots of the word searches into text. I actually tried to use Google's Tesseract first (https://github.com/tesseract-ocr/tesseract), but it depends heavily on interpreting letters in context (as in, it looks for words, not just letters) so it balked at a grid of random letters.
 GOCR helpfully allows you to use a local database and run supervised learning where it'll ask for help when it can't quite read something. Here's what the parsing process looks like for the first loan's puzzle
 
+```
 [12:21:44] jmatthew:grid_images/ $ gocr -p ../../gocr/ -i grid01.png -C ABCDEFGHIJKLMNOPQRSTUVWXYZ -m 167
 
-```
 # show box + environment
 # show box     x=   29  234 d=  19  29 r= 1 0
 # show pattern x=    4  232 d=  69  38 t= 1 1
@@ -141,7 +141,7 @@ D W C R F V O C Z R
 The long part of this was taking 49 screenshots from the PDF. I put them all in a folder and wrote a shell script to turn each one into text like the above, then take all the outputs and write them into a single file that could be read by the python script that solved the word searches.
 
 
-Puzzle Solver:
+# Puzzle Solver
 
 Takes as input a puzzle in the form of a string of 100 letters, so the puzzle above becomes:
 Y I V E T V V Y M T W O R J T A J G H C I B C G G N O T I S Y C F P W P Y N V D I K P M H U O D Z P N B J M F T D S V E L N O V R L W U P R S U A A M O N E Y K X P H A Q U F M N R D W C R F V O C Z R 
