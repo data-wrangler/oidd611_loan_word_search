@@ -10,6 +10,7 @@ GOCR helpfully allows you to use a local database and run supervised learning wh
 
 [12:21:44] jmatthew:grid_images/ $ gocr -p ../../gocr/ -i grid01.png -C ABCDEFGHIJKLMNOPQRSTUVWXYZ -m 167
 
+```
 # show box + environment
 # show box     x=   29  234 d=  19  29 r= 1 0
 # show pattern x=    4  232 d=  69  38 t= 1 1
@@ -135,6 +136,7 @@ L N O V R L W U P R
 S U A A M O N E Y K
 X P H A Q U F M N R
 D W C R F V O C Z R
+```
 
 The long part of this was taking 49 screenshots from the PDF. I put them all in a folder and wrote a shell script to turn each one into text like the above, then take all the outputs and write them into a single file that could be read by the python script that solved the word searches.
 
@@ -147,6 +149,7 @@ Y I V E T V V Y M T W O R J T A J G H C I B C G G N O T I S Y C F P W P Y N V D 
 The process first converts that string of 100 characters into groups of strings to search for words. For each puzzle, that'd be ten rows, ten columns, nineteen left diagonals and nineteen right diagonals, and each one could be searched either forwards or backwards.
 In code, I handled that as eight arrays of strings: horizontal, vertical, left and right diagonals, and all their respective reverses.
 So for the puzzle above, those would be:
+```
 H=['YIVETVVYMT', 'WORJTAJGHC', 'IBCGGNOTIS', 'YCFPWPYNVD', 'IKPMHUODZP', 'NBJMFTDSVE', 'LNOVRLWUPR', 'SUAAMONEYK', 'XPHAQUFMNR', 'DWCRFVOCZR']
 HR=['TMYVVTEVIY', 'CHGJATJROW', 'SITONGGCBI', 'DVNYPWPFCY', 'PZDOUHMPKI', 'EVSDTFMJBN', 'RPUWLRVONL', 'KYENOMAAUS', 'RNMFUQAHPX', 'RZCOVFRCWD']
 V=['YWIYINLSXD', 'IOBCKBNUPW', 'VRCFPJOAHC', 'EJGPMMVAAR', 'TTGWHFRMQF', 'VANPUTLOUV', 'VJOYODWNFO', 'YGTNDSUEMC', 'MHIVZVPYNZ', 'TCSDPERKRR']
@@ -155,6 +158,7 @@ DL=['Y', 'IW', 'VOI', 'ERBY', 'TJCCI', 'VTGFKN', 'VAGPPBL', 'YJNWMJNS', 'MGOPHMO
 DLR=['Y', 'WI', 'IOV', 'YBRE', 'ICCJT', 'NKFGTV', 'LBPPGAV', 'SNJMWNJY', 'XUOMHPOGM', 'DPAVFUYTHT', 'WHARTONIC', 'CAMLDDVS', 'RQOWSZD', 'FUNUVP', 'VFEPE', 'OMYR', 'CNK', 'ZR', 'R']
 DR=['T', 'MC', 'YHS', 'VGID', 'VJTVP', 'TAONZE', 'ETNYDVR', 'VJGPOSPK', 'IRGWUDUYR', 'YOCPHTWENR', 'WBFMFLNMZ', 'ICPMROFC', 'YKJVMUO', 'IBOAQV', 'NNAAF', 'LUHR', 'SPC', 'XW', 'D']
 DRR=['T', 'CM', 'SHY', 'DIGV', 'PVTJV', 'EZNOAT', 'RVDYNTE', 'KPSOPGJV', 'RYUDUWGRI', 'RNEWTHPCOY', 'ZMNLFMFBW', 'CFORMPCI', 'OUMVJKY', 'VQAOBI', 'FAANN', 'RHUL', 'CPS', 'WX', 'D']
+```
 
 When the process finds a word, it turns it into a list of the coordinates of the letters in the grid.
 For each search direction, the easy part was finding the word if it existed -- just looking for a known substring.
@@ -166,6 +170,8 @@ Turning a found word into a set of coordinates is super easy for the rows and co
 So then given a list of sets of coordinates for solutions, I can re-print the puzzle but only include the letters that are part of a found word.
 
 This is the output of the process for any given puzzle:
+
+```
 Solving Wordsearch 1
 Grid:
 Y I V E T V V Y M T
@@ -214,3 +220,4 @@ E R U T U F S N • •
 • • • • • • • S • •
 • • • • • • • • • •
 • • • • • • • • • •
+```
