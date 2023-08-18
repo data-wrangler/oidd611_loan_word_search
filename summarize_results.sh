@@ -1,0 +1,1 @@
+cat word_search_results.txt | grep "Found:" | nl | sed "s/^\s\+//g;s/\s\+Found: /\t/g" > word_search_results_counts_only.txt
