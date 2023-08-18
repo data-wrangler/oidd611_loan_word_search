@@ -6,6 +6,7 @@ It's probably important to note that this was kinda a perfect storm for me.
 # OCR Image Processing
 
 I used the open-source GOCR package (http://jocr.sourceforge.net/) to turn screenshots of the word searches into text. I actually tried to use Google's Tesseract first (https://github.com/tesseract-ocr/tesseract), but it depends heavily on interpreting letters in context (as in, it looks for words, not just letters) so it balked at a grid of random letters.
+
 GOCR helpfully allows you to use a local database and run supervised learning where it'll ask for help when it can't quite read something. Here's what the parsing process looks like for the first loan's puzzle
 
 ```
@@ -144,11 +145,17 @@ The long part of this was taking 49 screenshots from the PDF. I put them all in 
 # Puzzle Solver
 
 Takes as input a puzzle in the form of a string of 100 letters, so the puzzle above becomes:
+
+```
 Y I V E T V V Y M T W O R J T A J G H C I B C G G N O T I S Y C F P W P Y N V D I K P M H U O D Z P N B J M F T D S V E L N O V R L W U P R S U A A M O N E Y K X P H A Q U F M N R D W C R F V O C Z R 
+```
 
 The process first converts that string of 100 characters into groups of strings to search for words. For each puzzle, that'd be ten rows, ten columns, nineteen left diagonals and nineteen right diagonals, and each one could be searched either forwards or backwards.
+
 In code, I handled that as eight arrays of strings: horizontal, vertical, left and right diagonals, and all their respective reverses.
+
 So for the puzzle above, those would be:
+
 ```
 H=['YIVETVVYMT', 'WORJTAJGHC', 'IBCGGNOTIS', 'YCFPWPYNVD', 'IKPMHUODZP', 'NBJMFTDSVE', 'LNOVRLWUPR', 'SUAAMONEYK', 'XPHAQUFMNR', 'DWCRFVOCZR']
 HR=['TMYVVTEVIY', 'CHGJATJROW', 'SITONGGCBI', 'DVNYPWPFCY', 'PZDOUHMPKI', 'EVSDTFMJBN', 'RPUWLRVONL', 'KYENOMAAUS', 'RNMFUQAHPX', 'RZCOVFRCWD']
@@ -162,9 +169,12 @@ DRR=['T', 'CM', 'SHY', 'DIGV', 'PVTJV', 'EZNOAT', 'RVDYNTE', 'KPSOPGJV', 'RYUDUW
 
 When the process finds a word, it turns it into a list of the coordinates of the letters in the grid.
 For each search direction, the easy part was finding the word if it existed -- just looking for a known substring.
+
 The harder part was producing an auditable output -- something I could look at to verify that the algorithm did its job.
+
 eg, in the puzzle above, the word "MONEY" is in the 8th row starting at column 5 and ending at column 9.
 therefore the coordinates of the word money are [(8,5),(8,6),(8,7),(8,8),(8,9)]
+
 Turning a found word into a set of coordinates is super easy for the rows and columns, there's a little more involved in the diagonals.
 
 So then given a list of sets of coordinates for solutions, I can re-print the puzzle but only include the letters that are part of a found word.
@@ -195,8 +205,11 @@ Found: 2
 • • • A M O N E Y •
 • • H • • • • • • •
 • W • • • • • • • •
+```
 
 For a slightly more complicated one:
+
+```
 Solving Wordsearch 48
 Grid:
 B K Y B O S T W K M
