@@ -1,6 +1,6 @@
 import re
 
-CODE_FILE = 'one_puzzle.txt'
+CODE_FILE = 'all_puzzles.txt'
 GRID_SIZE = 10
 WORD_LIST = [
     'WHARTON',
@@ -56,25 +56,7 @@ def do_word_search(grid_string, word_list):
     ws_dl=[get_diag(grid_string,x) for x in range(1,GRID_SIZE*2)]
     ws_dr=[get_diag(grid_string,x,-1) for x in range(1,GRID_SIZE*2)]
 
-    """
-    This part shouldn't be necessary. I can search the existing sets of strings for reversed words.
-
-    # construct reverse grids to search opposite direction
-    ws_hr = [w[::-1] for w in ws_h]
-    ws_vr = [w[::-1] for w in ws_v]
-    ws_dlr = [w[::-1] for w in ws_dl]
-    ws_drr = [w[::-1] for w in ws_dr]
-    print(ws_h)
-    print(ws_hr)
-    print(ws_v)
-    print(ws_vr)
-    print(ws_dl)
-    print(ws_dlr)
-    print(ws_dr)
-    print(ws_drr)
-    """
-
-    # search for each word in word list in each set of directional strings
+    # search for each word and each word reversed in word list in each set of strings
     # if found, store coordinates of found letters
     matches=[]
     for w in WORD_LIST+[x[::-1] for x in WORD_LIST]:
@@ -86,14 +68,6 @@ def do_word_search(grid_string, word_list):
                 matches.append(found_coords)
             except ValueError:
                 pass
-        # horizontal reversed
-        # for i, s in enumerate(ws_hr):
-        #     try:
-        #         start = s.index(w)
-        #         found_coords = [(i,GRID_SIZE-1-x,) for x in range(start,start+len(w))]
-        #         matches.append(found_coords)
-        #     except ValueError:
-        #         pass
         # vertical
         for i, s in enumerate(ws_v):
             try:
@@ -102,14 +76,6 @@ def do_word_search(grid_string, word_list):
                 matches.append(found_coords)
             except ValueError:
                 pass
-        # vertical reversed
-        # for i, s in enumerate(ws_vr):
-        #     try:
-        #         start = s.index(w)
-        #         found_coords = [(GRID_SIZE-1-x,i,) for x in range(start,start+len(w))]
-        #         matches.append(found_coords)
-        #     except ValueError:
-        #         pass
         # diagonal left
         for i, s in enumerate(ws_dl):
             try:
@@ -120,16 +86,6 @@ def do_word_search(grid_string, word_list):
                 matches.append(found_coords)
             except ValueError:
                 pass
-        # diagonal left reversed
-        # for i, s in enumerate(ws_dlr):
-        #     try:
-        #         start = s.index(w)
-        #         diag_start = (((i+1)%GRID_SIZE)*(i//GRID_SIZE),min(i,GRID_SIZE-1),)
-        #         word_start = (diag_start[0]+start, diag_start[1]-start, )
-        #         found_coords = [(word_start[1]-x,word_start[0]+x,) for x in range(len(w))]
-        #         matches.append(found_coords)
-        #     except ValueError:
-        #         pass
         # diagonal right
         for i, s in enumerate(ws_dr):
             try:
@@ -140,16 +96,6 @@ def do_word_search(grid_string, word_list):
                 matches.append(found_coords)
             except ValueError:
                 pass
-        # diagonal right reversed
-        # for i, s in enumerate(ws_drr):
-        #     try:
-        #         start = s.index(w)
-        #         diag_start = (((i+1)%GRID_SIZE)*(i//GRID_SIZE),GRID_SIZE-1-min(i,GRID_SIZE-1),)
-        #         word_start = (diag_start[0]+start, diag_start[1]+start, )
-        #         found_coords = [(GRID_SIZE-1-word_start[1]-x,GRID_SIZE-1-word_start[0]-x,) for x in range(len(w))]
-        #         matches.append(found_coords)
-        #     except ValueError:
-        #         pass
     
     # print results & show found words
     print("Found: {0!s}".format(len(matches)))
